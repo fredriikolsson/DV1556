@@ -2,6 +2,7 @@
 #include <stdexcept>
 
 MemBlockDevice::MemBlockDevice(int nrOfBlocks): BlockDevice(nrOfBlocks) {
+    
 
 }
 

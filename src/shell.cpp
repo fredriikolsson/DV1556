@@ -17,14 +17,18 @@ bool quit();
 std::string help();
 
 /* More functions ... */
+void expand(std::string* dirList, int &listSize);
+void listDirectory(FileSystem fs);
 
 int main(void) {
-
 	std::string userCommand, commandArr[MAXCOMMANDS];
 	std::string user = "user@DV1492";    // Change this if you want another user to be displayed
 	std::string currentDir = "/";    // current directory, used for output
-
     bool bRun = true;
+
+
+
+    FileSystem fs;
 
     do {
         std::cout << user << ":" << currentDir << "$ ";
@@ -40,11 +44,13 @@ int main(void) {
 				bRun = quit();                
                 break;
             case 1: // format
+            fs.format();
                 break;
             case 2: // ls
-                std::cout << "Listing directory" << std::endl;
+            listDirectory(fs);
                 break;
-            case 3: // create
+            case 3: // create 
+            fs.createFile(commandArr[1]);
                 break;
             case 4: // cat
                 break;
@@ -128,3 +134,40 @@ std::string help() {
 }
 
 /* Insert code for your shell functions and call them from the switch-case */
+void expand(std::string* dirList, int &listSize)
+{
+    listSize = listSize + 10;
+    std::string* temp = new std::string [listSize];
+    for(int i = 0;i<listSize-10;i++)
+    {
+        temp[i] = dirList[i];
+    }
+
+    delete [] dirList;
+    dirList = temp;
+}
+void listDirectory(FileSystem fs)
+{
+    int listSize = 10;
+    std::string * dirList = new std::string[listSize];
+
+    if(fs.nrOfBlocks() > listSize){
+        expand(dirList, listSize);
+    }
+
+    if(fs.nrOfBlocks() > 0)
+    {
+    std::cout << "Listing directory" << std::endl;
+    fs.listDir(dirList);
+
+    for(int i = 0; i < fs.nrOfBlocks(); i++) 
+    {
+        std::cout << dirList << std::endl;
+    }
+}
+    else
+{
+    std::cout << "Empty Repository " << std::endl;
+}
+
+}
