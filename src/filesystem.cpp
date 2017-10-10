@@ -4,7 +4,7 @@ FileSystem::FileSystem() {
     this->mMemblockDevice = MemBlockDevice();
     this->blocks = 0;
 
-    this->folders = new int[5];
+    this->fso = new Folder*[1];
 }
 
 FileSystem::~FileSystem() {

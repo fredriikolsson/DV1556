@@ -12,7 +12,6 @@ private:
     MemBlockDevice mMemblockDevice;
     // Here you can add your own data structures
     int blocks;
-    int ** folders;
 
     Folder * fso; //Initiera
 public:
