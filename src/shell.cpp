@@ -19,6 +19,7 @@ std::string help();
 /* More functions ... */
 void expand(std::string* dirList, int &listSize);
 void listDirectory(FileSystem fs);
+void createFile(FileSystem & fs, std::string commandArr);
 
 int main(void) {
 	std::string userCommand, commandArr[MAXCOMMANDS];
@@ -41,16 +42,17 @@ int main(void) {
             switch(cIndex) {
 
 			case 0: //quit
-				bRun = quit();                
+				bRun = quit();
                 break;
             case 1: // format
             fs.format();
                 break;
             case 2: // ls
-            listDirectory(fs);
+                listDirectory(fs);
                 break;
-            case 3: // create 
-            fs.createFile(commandArr[1]);
+            case 3: // create
+                createFile(fs, commandArr[1]);
+                //fs.createFile(commandArr[1]);
                 break;
             case 4: // cat
                 break;
@@ -157,17 +159,26 @@ void listDirectory(FileSystem fs)
 
     if(fs.nrOfBlocks() > 0)
     {
-    std::cout << "Listing directory" << std::endl;
-    fs.listDir(dirList);
+        std::cout << "Listing directory" << std::endl;
+        fs.listDir(dirList);
 
-    for(int i = 0; i < fs.nrOfBlocks(); i++) 
-    {
-        std::cout << dirList << std::endl;
+        for(int i = 0; i < fs.nrOfBlocks(); i++)
+        {
+            std::cout << dirList[i] << std::endl;
+        }
     }
-}
     else
-{
-    std::cout << "Empty Repository " << std::endl;
+    {
+        std::cout << "Empty Repository " << std::endl;
+    }
+
 }
 
+void createFile(FileSystem & fs, std::string commandArr)
+{
+    bool createResult = fs.createFile(commandArr);
+    if(!createResult)
+    {
+        std::cout << "File already exists with that name. Use another name.\n";
+    }
 }

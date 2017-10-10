@@ -3,6 +3,8 @@
 
 #include<string>
 #include "memblockdevice.h"
+#include "FilesSystemObject.h"
+#include "Folder.h"
 
 class FileSystem
 {
@@ -10,6 +12,9 @@ private:
     MemBlockDevice mMemblockDevice;
     // Here you can add your own data structures
     int blocks;
+    int ** folders;
+
+    Folder * fso; //Initiera
 public:
     FileSystem();
     ~FileSystem();
@@ -40,7 +45,7 @@ public:
 
     /* Number Of Blocks*/
     int nrOfBlocks();
-    
+
     /* Format */
     void format();
 
