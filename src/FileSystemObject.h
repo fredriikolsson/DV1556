@@ -5,13 +5,11 @@
 
 class FileSystemObject
 {
-private:
-    int pos;
 public:
-    FileSystemObject(int pos) { this->pos = pos;};
-    virtual ~FileSystemObject() {} const = 0;
+    FileSystemObject();
+    virtual ~FileSystemObject();
 
-    virtual int getPos() const;
+    virtual int getPos() const = 0;
 };
 
 #endif // FILESYSTEMOBJECT_H

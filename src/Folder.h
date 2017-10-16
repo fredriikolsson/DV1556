@@ -10,6 +10,7 @@ class Folder : public FileSystemObject
 private:
     int previousFolder;
     std::string folderName;
+    int folderPos;
 
     int folderSize;
     int currentItemsInFolder;
@@ -17,7 +18,7 @@ private:
 public:
     Folder(int previousFolder, int folderPos, std::string folderName);
     virtual ~Folder();
-    File(Folder & anotherFolder);    
+    Folder(Folder & anotherFolder);    
 
     bool addFile(File * toAdd);
     bool addFolder(Folder * toAdd);
@@ -26,7 +27,7 @@ public:
 
     void getFolderStructure(FileSystemObject ** array);
 
-    int getFolderPos() const;
+    int getPos() const; // getFolderPos;
     int getPrevousFolder() const;
     int getFolderSize() const;
     std::string getFolderName() const;

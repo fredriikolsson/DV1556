@@ -27,15 +27,20 @@ Folder::Folder(Folder & anotherFolder)
     this->currentItemsInFolder = anotherFolder.currentItemsInFolder;
     this->folderSize = anotherFolder.folderSize;
 
-    for(int i = 0; i < this->currentFolder; i++)
+    for(int i = 0; i < this->currentItemsInFolder; i++)
     {
         this->structure[i] = anotherFolder.structure[i];
     }
 }
 
-bool Folder::addFile(File toAdd)
+bool Folder::addFile(File * toAdd)
 {
-    this->structure[this->currentItemsInFolder++] = toAdd
+    this->structure[this->currentItemsInFolder++] = toAdd;
+}
+
+bool Folder::addFolder(Folder * toAdd)
+{
+    this->structure[this->currentItemsInFolder++] = toAdd;
 }
 
 void Folder::getFolderStructure(FileSystemObject ** array)
@@ -46,7 +51,7 @@ void Folder::getFolderStructure(FileSystemObject ** array)
     }
 }
 
-int Folder::getFolderPos() const
+int Folder::getPos() const
 {
     return this->folderPos;
 }
