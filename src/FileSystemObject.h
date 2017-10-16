@@ -6,13 +6,10 @@
 class FileSystemObject
 {
 private:
-
+    int pos;
 public:
-    FileSystemObject();
-    ~FileSystemObject();
-
-    virtual int getValue();
-    virtual int insertValue();
+    FileSystemObject() {};
+    virtual ~FileSystemObject() {};
 
 };
 

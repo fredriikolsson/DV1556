@@ -1,25 +1,36 @@
 #ifndef FOLDER_H
 #define FOLDER_H
 
-#include "FilesSystemObject.h"
+#include "FileSystemObject.h"
+#include "File.h"
+#include <string>
 
-class Folder : public FilesSystemObject
+class Folder : public FileSystemObject
 {
 private:
     int previousFolder;
-    int folderPos;
-    FilesSystemObject ** structures;
-public:
-    Folder(int previousFolder, int folderPos);
-    ~Folder();
+    std::string folderName;
 
+    int folderSize;
+    int currentItemsInFolder;
+    FileSystemObject ** structure;
+public:
+    Folder(int previousFolder, int folderPos, std::string folderName);
+    virtual ~Folder();
+
+    bool addFile(File toAdd);
+    bool addFolder(Folder toAdd);
     //kunna lägga till mappar och filer.
     //detta ska vara kopplat i FILESYSTEM_H
 
-    int getFolderPos();
-    int getPrevousFolder();
+    void getFolderStructure(FileSystemObject ** array);
+
+    int getFolderPos() const;
+    int getPrevousFolder() const;
+    int getFolderSize() const;
+    std::string getFolderName() const;
+
+    void expandFolder();
 };
 
 #endif // FILES_H
-
-#endif

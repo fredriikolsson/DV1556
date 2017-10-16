@@ -3,17 +3,13 @@
 
 #include "FileSystemObject.h"
 
-class File : public FilesSystemObject
+class File : public FileSystemObject
 {
-private:
-    int bufferPos;
 public:
-    File(int pos);
+    File(int pos = 0);
     ~File();
 
     int getBufferPos();
 };
 
 #endif // File_H
-
-#endif

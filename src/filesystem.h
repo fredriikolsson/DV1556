@@ -1,9 +1,9 @@
 #ifndef FILESYSTEM_H
 #define FILESYSTEM_H
 
-#include<string>
+#include <string>
 #include "memblockdevice.h"
-#include "FilesSystemObject.h"
+#include "FileSystemObject.h"
 #include "Folder.h"
 
 class FileSystem
@@ -13,12 +13,15 @@ private:
     // Here you can add your own data structures
     int blocks;
 
-    Folder * fso; //Initiera
+    Folder ** fso; //Initiera
+    int currentFolder;
+    int nrOfFolders;
+    int folderCap;
 public:
     FileSystem();
-    ~FileSystem();
+    virtual ~FileSystem();
 
-    /* These API functions need to be implemented
+    /* These API functions need to be implemented 
 	   You are free to specify parameter lists and return values
     */
 
@@ -47,6 +50,8 @@ public:
 
     /* Format */
     void format();
+
+    std::string getCurrentFolderName() const;
 
 };
 
