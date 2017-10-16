@@ -30,7 +30,7 @@ public:
     int getPos() const; // getFolderPos;
     int getPrevousFolder() const;
     int getFolderSize() const;
-    std::string getFolderName() const;
+    std::string getName() const;
 
     void expandFolder();
 };

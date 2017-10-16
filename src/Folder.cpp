@@ -35,6 +35,8 @@ Folder::Folder(Folder & anotherFolder)
 
 bool Folder::addFile(File * toAdd)
 {
+    bool canAddFile = false;
+    
     this->structure[this->currentItemsInFolder++] = toAdd;
 }
 
@@ -66,7 +68,7 @@ int Folder::getFolderSize() const
     return this->currentItemsInFolder;
 }
 
-std::string Folder::getFolderName () const
+std::string Folder::getName () const
 {
     return this->folderName;
 }

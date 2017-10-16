@@ -6,10 +6,11 @@
 class FileSystemObject
 {
 public:
-    FileSystemObject();
+
     virtual ~FileSystemObject();
 
     virtual int getPos() const = 0;
+    virtual std::string getName() const = 0;
 };
 
 #endif // FILESYSTEMOBJECT_H
