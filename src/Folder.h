@@ -9,19 +9,20 @@ class Folder : public FileSystemObject
 {
 private:
     int previousFolder;
-    std::string folderName;
     int folderPos;
 
     int folderSize;
     int currentItemsInFolder;
     FileSystemObject ** structure;
 public:
-    Folder(int previousFolder, int folderPos, std::string folderName);
+    Folder(int previousFolder, int folderPos, std::string name);
     virtual ~Folder();
-    Folder(Folder & anotherFolder);    
+    // Folder(Folder & anotherFolder);    
 
     bool addFile(File * toAdd);
     bool addFolder(Folder * toAdd);
+
+    bool searchItem(std::string name) const;
     //kunna lägga till mappar och filer.
     //detta ska vara kopplat i FILESYSTEM_H
 
@@ -30,7 +31,7 @@ public:
     int getPos() const; // getFolderPos;
     int getPrevousFolder() const;
     int getFolderSize() const;
-    std::string getName() const;
+    // std::string getName() const;
 
     void expandFolder();
 };

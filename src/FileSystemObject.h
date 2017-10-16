@@ -5,12 +5,14 @@
 
 class FileSystemObject
 {
+private: 
+    std::string name;
 public:
 
-    virtual ~FileSystemObject();
+    FileSystemObject(std::string name) {this->name = name;}
+    virtual ~FileSystemObject() {};    
 
-    virtual int getPos() const = 0;
-    virtual std::string getName() const = 0;
+    virtual std::string getName() {return this->name;}
 };
 
 #endif // FILESYSTEMOBJECT_H

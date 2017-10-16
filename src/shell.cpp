@@ -22,14 +22,14 @@ void listDirectory(FileSystem fs);
 void createFile(FileSystem & fs, std::string commandArr);
 
 int main(void) {
+    FileSystem fs;
+    
 	std::string userCommand, commandArr[MAXCOMMANDS];
 	std::string user = "user@DV1492";    // Change this if you want another user to be displayed
-	std::string currentDir = "/";    // current directory, used for output
+    //std::string currentDir = "/";    // current directory, used for output
+    std::string currentDir = fs.getCurrentFolderName();
     bool bRun = true;
 
-
-
-    FileSystem fs;
 
     do {
         std::cout << user << ":" << currentDir << "$ ";

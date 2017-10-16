@@ -1,6 +1,7 @@
 #include "Folder.h"
 
-Folder::Folder(int previousFolder, int folderPos, std::string folderName)
+Folder::Folder(int previousFolder, int folderPos, std::string name)
+    :FileSystemObject(name)
 {
     this->previousFolder = previousFolder;
     this->folderPos = folderPos;
@@ -19,30 +20,60 @@ Folder::~Folder() {
     delete [] this->structure;
 }
 
-Folder::Folder(Folder & anotherFolder)
-{
-    this->previousFolder = anotherFolder.previousFolder;
-    this->folderPos = anotherFolder.folderPos;
+// Folder::Folder(Folder & anotherFolder)
+// {
+//     this->previousFolder = anotherFolder.previousFolder;
+//     this->folderPos = anotherFolder.folderPos;
+ 
 
-    this->currentItemsInFolder = anotherFolder.currentItemsInFolder;
-    this->folderSize = anotherFolder.folderSize;
+//     this->currentItemsInFolder = anotherFolder.currentItemsInFolder;
+//     this->folderSize = anotherFolder.folderSize;
 
-    for(int i = 0; i < this->currentItemsInFolder; i++)
-    {
-        this->structure[i] = anotherFolder.structure[i];
-    }
-}
+//     for(int i = 0; i < this->currentItemsInFolder; i++)
+//     {
+//         this->structure[i] = anotherFolder.structure[i];
+//     }
+// }
 
 bool Folder::addFile(File * toAdd)
 {
     bool canAddFile = false;
+    if(this->currentItemsInFolder == this->folderSize)
+        this->expandFolder();
     
-    this->structure[this->currentItemsInFolder++] = toAdd;
+    if(!searchItem(toAdd->getName()))
+    {
+        this->structure[this->currentItemsInFolder] = toAdd;
+        this->currentItemsInFolder = this->currentItemsInFolder + 1;
+        canAddFile = true;
+    }
+    return canAddFile;
 }
 
 bool Folder::addFolder(Folder * toAdd)
 {
-    this->structure[this->currentItemsInFolder++] = toAdd;
+    bool canAddFolder = false;
+    if(this->currentItemsInFolder == this->folderSize)
+        this->expandFolder();
+    
+    if(!searchItem(toAdd->getName()))
+    {
+        this->structure[this->currentItemsInFolder] = toAdd;
+        this->currentItemsInFolder = this->currentItemsInFolder + 1;
+        canAddFolder = true;
+    }
+    return canAddFolder;
+}
+
+bool Folder::searchItem(std::string name) const
+{   
+    bool isFound = false;
+    for(int i = 0; i < this->currentItemsInFolder; i++)
+    {
+        if(this->structure[i]->getName() == name)
+            isFound = true;
+    }
+    return isFound;
 }
 
 void Folder::getFolderStructure(FileSystemObject ** array)
@@ -68,10 +99,10 @@ int Folder::getFolderSize() const
     return this->currentItemsInFolder;
 }
 
-std::string Folder::getName () const
-{
-    return this->folderName;
-}
+// std::string Folder::getName () const
+// {
+//     return this->folderName;
+// }
 
 void Folder::expandFolder()
 {

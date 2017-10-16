@@ -75,5 +75,5 @@ void FileSystem::format()
 
 std::string FileSystem::getCurrentFolderName() const
 {
-    return this->fso[this->currentFolder]->getFolderName();
+    return this->fso[this->currentFolder]->getName();
 }
