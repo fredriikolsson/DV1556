@@ -5,9 +5,12 @@
 
 class File : public FileSystemObject
 {
+private: 
+    int bufferPos;
 public:
     File(int pos = 0);
     ~File();
+    File(File & anotherFile);
 
     int getBufferPos();
 };

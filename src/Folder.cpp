@@ -19,6 +19,25 @@ Folder::~Folder() {
     delete [] this->structure;
 }
 
+Folder::Folder(Folder & anotherFolder)
+{
+    this->previousFolder = anotherFolder.previousFolder;
+    this->folderPos = anotherFolder.folderPos;
+
+    this->currentItemsInFolder = anotherFolder.currentItemsInFolder;
+    this->folderSize = anotherFolder.folderSize;
+
+    for(int i = 0; i < this->currentFolder; i++)
+    {
+        this->structure[i] = anotherFolder.structure[i];
+    }
+}
+
+bool Folder::addFile(File toAdd)
+{
+    this->structure[this->currentItemsInFolder++] = toAdd
+}
+
 void Folder::getFolderStructure(FileSystemObject ** array)
 {
     for(int i = 0; i < this->getFolderSize(); i++)

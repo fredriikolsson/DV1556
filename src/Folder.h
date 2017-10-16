@@ -17,9 +17,10 @@ private:
 public:
     Folder(int previousFolder, int folderPos, std::string folderName);
     virtual ~Folder();
+    File(Folder & anotherFolder);    
 
-    bool addFile(File toAdd);
-    bool addFolder(Folder toAdd);
+    bool addFile(File * toAdd);
+    bool addFolder(Folder * toAdd);
     //kunna lägga till mappar och filer.
     //detta ska vara kopplat i FILESYSTEM_H
 
