@@ -18,8 +18,10 @@ std::string help();
 
 /* More functions ... */
 void expand(std::string* dirList, int &listSize);
-void listDirectory(FileSystem fs);
+void listDirectory(FileSystem & fs);
 void createFile(FileSystem & fs, std::string commandArr);
+void createFolder(FileSystem & fs, std::string commandArr);
+void updateCurrentFolderName(FileSystem & fs, std::string & currentDir);
 
 int main(void) {
     FileSystem fs;
@@ -69,8 +71,11 @@ int main(void) {
             case 10: // mv
                 break;
             case 11: // mkdir
+                createFolder(fs, commandArr[1]);
                 break;
             case 12: // cd
+                if(fs.goToFolder(commandArr[1]))
+                    updateCurrentFolderName(fs, currentDir);
                 break;
             case 13: // pwd
                 break;
@@ -148,18 +153,14 @@ void expand(std::string* dirList, int &listSize)
     delete [] dirList;
     dirList = temp;
 }
-void listDirectory(FileSystem fs)
+void listDirectory(FileSystem & fs)
 {
-    int listSize = 10;
-    std::string * dirList = new std::string[listSize];
+    std::string * dirList = new std::string[fs.getFolderSize()];
 
-    if(fs.nrOfBlocks() > listSize){
-        expand(dirList, listSize);
-    }
-
-    if(fs.nrOfBlocks() > 0)
+    if(fs.getFolderSize() > 0)
     {
         std::cout << "Listing directory" << std::endl;
+        std::cout << "File \t\t\t Folder" << std::endl;
         fs.listDir(dirList);
 
         for(int i = 0; i < fs.nrOfBlocks(); i++)
@@ -172,6 +173,7 @@ void listDirectory(FileSystem fs)
         std::cout << "Empty Repository " << std::endl;
     }
 
+    delete [] dirList;
 }
 
 void createFile(FileSystem & fs, std::string commandArr)
@@ -181,4 +183,18 @@ void createFile(FileSystem & fs, std::string commandArr)
     {
         std::cout << "File already exists with that name. Use another name.\n";
     }
+}
+
+void createFolder(FileSystem & fs, std::string commandArr)
+{
+    bool createResult = fs.createFolder(commandArr);
+    if(!createResult)
+    {
+        std::cout << "Folder already exists with that name. Use another name.\n";
+    }
+}
+
+void updateCurrentFolderName(FileSystem & fs, std::string & currentDir)
+{
+    currentDir = fs.getCurrentFolderName();
 }

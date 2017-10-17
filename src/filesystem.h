@@ -5,6 +5,7 @@
 #include "memblockdevice.h"
 #include "FileSystemObject.h"
 #include "Folder.h"
+#include "File.h"
 
 class FileSystem
 {
@@ -39,6 +40,7 @@ public:
 
     /* Function will move the current location to a specified location in the filesystem */
     // goToFolder(...);
+    bool goToFolder(std::string nextFolder);
 
     /* This function will get all the files and folders in the specified folder */
      void listDir(std::string dirList[]);
@@ -51,8 +53,10 @@ public:
     /* Format */
     void format();
 
+    int findFolder(std::string name) const;
     std::string getCurrentFolderName() const;
-
+    int getFolderSize() const;
+    void expandFolderSystem();
 };
 
 #endif // FILESYSTEM_H
