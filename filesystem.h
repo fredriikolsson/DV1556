@@ -27,13 +27,18 @@ public:
 	*/
 
 	/* This function creates a file in the filesystem */
-	bool createFile(std::string fileName);
+	bool createFile(std::string fileName, std::string content = "Empty");
+
+	std::string cat(std::string fileName) const;
 
 	/* Creates a folder in the filesystem */
 	bool createFolder(std::string folderName);
 
 	/* Removes a file in the filesystem */
 	// removeFile(...);
+	bool removeFile(std::string name);
+	bool removeFolder(std::string name, int posOfFolderToEnter = -1);
+	bool removeItem(std::string name);
 
 	/* Removes a folder in the filesystem */
 	// removeFolder(...);
@@ -53,10 +58,14 @@ public:
 	/* Format */
 	void format();
 
+	void createImage();
+
 	int findFolder(std::string name) const;
 	std::string getCurrentFolderName() const;
 	int getFolderSize() const;
+	int getCurrentFolder() const;
 	void expandFolderSystem();
+
 };
 
 #endif // FILESYSTEM_H

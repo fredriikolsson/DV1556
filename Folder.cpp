@@ -8,7 +8,7 @@ Folder::Folder(int previousFolder, int folderPos, std::string name)
 	this->folderPos = folderPos;
 
 	this->currentItemsInFolder = 0;
-	this->folderSize = 10;
+	this->folderSize = 1;
 	this->structure = new FileSystemObject *[this->folderSize];
 	for (int i = 0; i<this->folderSize; i++)
 	{
@@ -18,9 +18,18 @@ Folder::Folder(int previousFolder, int folderPos, std::string name)
 }
 
 Folder::~Folder() {
+	//this->deAllocateMemory();
+}
+
+void Folder::deAllocateMemory()
+{
 	for (int i = 0; i < this->currentItemsInFolder; i++)
 	{
-		delete this->structure[i];
+		File * isFile = dynamic_cast<File*>(this->structure[i]);
+		if (isFile != nullptr)
+		{
+			delete this->structure[i];
+		}
 	}
 	delete[] this->structure;
 }
@@ -51,7 +60,7 @@ bool Folder::addFile(File * toAdd)
 	if (this->currentItemsInFolder == this->folderSize)
 		this->expandFolder();
 
-	if (!searchItem(toAdd->getName()))
+	if (searchItem(toAdd->getName()) == -1)
 	{
 		this->structure[this->currentItemsInFolder] = toAdd;
 		this->currentItemsInFolder = this->currentItemsInFolder + 1;
@@ -68,7 +77,7 @@ bool Folder::addFolder(Folder * toAdd)
 	if (this->currentItemsInFolder == this->folderSize)
 		this->expandFolder();
 
-	if (!searchItem(toAdd->getName()))
+	if (-1 == searchItem(toAdd->getName()))
 	{
 		this->structure[this->currentItemsInFolder] = toAdd;
 		this->currentItemsInFolder = this->currentItemsInFolder + 1;
@@ -77,23 +86,37 @@ bool Folder::addFolder(Folder * toAdd)
 	return canAddFolder;
 }
 
-bool Folder::searchItem(std::string name) const
+int Folder::removeFile(int posToRemove)
 {
-	bool isFound = false;
-	std::cout << "items in folder " << this->currentItemsInFolder << std::endl;
+	int didRemove = -1;
+	File * isFile = dynamic_cast<File*>(this->structure[posToRemove]);
+	if (isFile != nullptr)
+	{
+		didRemove = isFile->getPos();
+		delete this->structure[posToRemove];
+		for (int i = posToRemove; i < this->currentItemsInFolder - 1; i++)
+		{
+			this->structure[i] = this->structure[i + 1];
+		}
+		this->currentItemsInFolder--;
+	}
+	return didRemove;
+}
+
+int Folder::searchItem(std::string name) const
+{
+	int isFound = -1;
 	for (int i = 0; i < this->currentItemsInFolder; i++)
 	{
 		if (this->structure[i]->getName() == name)
-			isFound = true;
+			isFound = i;
 	}
-
 
 	return isFound;
 }
 
 void Folder::getFolderStructure(FileSystemObject ** array)
 {
-	std::cout << "printar från folder" << std::endl;
 	for (int i = 0; i < this->getFolderSize(); i++)
 	{
 		array[i] = this->structure[i];
@@ -105,6 +128,12 @@ int Folder::getPos() const
 	return this->folderPos;
 }
 
+int Folder::getFolderPos(int pos)
+{
+	Folder * isFolder = dynamic_cast<Folder*>(this->structure[pos]);
+	return isFolder->getPos();
+}
+
 int Folder::getPrevousFolder() const
 {
 	return this->previousFolder;
@@ -113,6 +142,17 @@ int Folder::getPrevousFolder() const
 int Folder::getFolderSize() const
 {
 	return this->currentItemsInFolder;
+}
+
+std::string Folder::getFileContent(int posOfFile) const
+{
+	std::string fileContent = "";
+	File * isFile = dynamic_cast<File*>(this->structure[posOfFile]);
+	if (isFile != nullptr)
+	{
+		fileContent = isFile->getContent();
+	}
+	return fileContent;
 }
 
  //std::string Folder::getName () const
@@ -134,19 +174,30 @@ void Folder::expandFolder()
 		temp[i] = nullptr;
 	}
 
-	delete[] this->structure;
+	delete this->structure;
 	this->structure = temp;
 }
 
-void Folder::operator=(Folder & anotherFolder) 
- {
-     this->previousFolder = anotherFolder.previousFolder;
-     this->folderPos = anotherFolder.folderPos;
-     this->currentItemsInFolder = anotherFolder.currentItemsInFolder;
-     this->folderSize = anotherFolder.folderSize;
+bool Folder::isFile(int posToCheck)
+{
+	File * isFile = dynamic_cast<File*>(this->structure[posToCheck]);
+	return isFile != nullptr;
+}
 
-     for(int i = 0; i < this->currentItemsInFolder; i++)
-     {
-         this->structure[i] = anotherFolder.structure[i];
-     }
- }
+//void Folder::operator=(Folder & anotherFolder) 
+// {
+//	setName(anotherFolder.getName());
+//	this->deAllocateMemory();
+//
+//     this->previousFolder = anotherFolder.previousFolder;
+//     this->folderPos = anotherFolder.folderPos;
+//     this->currentItemsInFolder = anotherFolder.currentItemsInFolder;
+//     this->folderSize = anotherFolder.folderSize;
+//
+//	 this->structure = new FileSystemObject*[anotherFolder.folderSize];
+//
+//     for(int i = 0; i < this->currentItemsInFolder; i++)
+//     {
+//         this->structure[i] = anotherFolder.structure[i];
+//     }
+// }

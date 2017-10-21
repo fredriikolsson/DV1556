@@ -19,11 +19,16 @@ std::string help();
 /* More functions ... */
 void expand(std::string* dirList, int &listSize);
 void listDirectory(FileSystem & fs);
-void createFile(FileSystem & fs, std::string commandArr);
+void createFile(FileSystem & fs, std::string commandArr, std::string content);
+void cat(FileSystem & fs, std::string fileName);
 void createFolder(FileSystem & fs, std::string commandArr);
 void updateCurrentFolderName(FileSystem & fs, std::string & currentDir);
+void printWorkingDirectory(FileSystem & fs);
+void removeItem(FileSystem & fs, std::string commandArr);
 
 int main(void) {
+	_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );  
+
 	FileSystem fs;
 
 	std::string userCommand, commandArr[MAXCOMMANDS];
@@ -53,15 +58,17 @@ int main(void) {
 				listDirectory(fs);
 				break;
 			case 3: // create
-				createFile(fs, commandArr[1]);
+				createFile(fs, commandArr[1], commandArr[2]);
 				break;
 			case 4: // cat
+				cat(fs, commandArr[1]);
 				break;
 			case 5: // createImage
 				break;
 			case 6: // restoreImage
 				break;
 			case 7: // rm
+				removeItem(fs, commandArr[1]);
 				break;
 			case 8: // cp
 				break;
@@ -77,6 +84,7 @@ int main(void) {
 					updateCurrentFolderName(fs, currentDir);
 				break;
 			case 13: // pwd
+				printWorkingDirectory(fs);
 				break;
 			case 14: // help
 				std::cout << help() << std::endl;
@@ -84,6 +92,9 @@ int main(void) {
 			default:
 				std::cout << "Unknown command: " << commandArr[0] << std::endl;
 			}
+			commandArr[0] = "";
+			commandArr[1] = "";
+			commandArr[2] = "";
 		}
 	} while (bRun == true);
 
@@ -173,13 +184,27 @@ void listDirectory(FileSystem & fs)
 	delete[] dirList;
 }
 
-void createFile(FileSystem & fs, std::string commandArr)
+void createFile(FileSystem & fs, std::string commandArr, std::string content)
 {
-	bool createResult = fs.createFile(commandArr);
+	bool createResult = false;
+	if (content == "")
+	{
+		 createResult = fs.createFile(commandArr);
+	}
+	else
+	{
+		createResult = fs.createFile(commandArr, content);
+	}
+
 	if (!createResult)
 	{
 		std::cout << "File already exists with that name. Use another name.\n";
 	}
+}
+
+void cat(FileSystem & fs, std::string fileName)
+{
+	std::cout << fs.cat(fileName) << std::endl;
 }
 
 void createFolder(FileSystem & fs, std::string commandArr)
@@ -194,4 +219,14 @@ void createFolder(FileSystem & fs, std::string commandArr)
 void updateCurrentFolderName(FileSystem & fs, std::string & currentDir)
 {
 	currentDir = fs.getCurrentFolderName();
+}
+
+void printWorkingDirectory(FileSystem & fs)
+{
+	std::cout << fs.getCurrentFolderName() << std::endl;
+}
+
+void removeItem(FileSystem & fs, std::string commandArr)
+{
+	std::cout << "Removal resulted in " << fs.removeItem(commandArr) << std::endl;
 }

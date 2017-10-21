@@ -13,6 +13,7 @@ public:
     virtual ~FileSystemObject() {};    
 
 	std::string getName() const { return this->name; }
+	void setName(std::string name) { this->name = name; }
 	virtual FileSystemObject* clone() const = 0;
 
 };

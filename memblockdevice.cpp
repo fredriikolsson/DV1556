@@ -1,4 +1,4 @@
-#include "memblockdevice.h"
+#include"memblockdevice.h"
 #include <stdexcept>
 
 MemBlockDevice::MemBlockDevice(int nrOfBlocks) : BlockDevice(nrOfBlocks) {
